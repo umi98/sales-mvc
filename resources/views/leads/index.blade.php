@@ -3,12 +3,12 @@
   <h1 class="text-dark">Leads</h1>
   <a href=" {{ route('leads.create') }} " class="btn btn-primary mb-3">Create new leads</a>
   <br>
-  <!-- <form action="{{ route('leads.search') }}" method="GET" class="mb-4">
+  <form action="{{ route('leads.index') }}" method="GET" class="mb-4">
     <div class="input-group">
-      <input type="text" name="query" class="form-control" placeholder="Cari apa saja..." aria-label="Cari leads">
+      <input type="text" name="query" class="form-control" placeholder="Cari apa saja..." aria-label="Cari leads" value="{{ request('query')}}">
       <button class="btn btn-outline-secondary" type="submit">Cari</button>
     </div>
-  </form> -->
+  </form>
   <br>
   <table class="table table-striped table-bordered">
     <thead>

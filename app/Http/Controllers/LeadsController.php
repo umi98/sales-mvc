@@ -10,10 +10,29 @@ use Illuminate\Http\Request;
 class LeadsController extends Controller
 {
     //
-    public function index() {
-        $leads = Leads::with('products', 'sales')
-                ->orderBy('tanggal','desc')->get();
-        return view('leads.index', compact('leads'));
+    public function index(Request $request) {
+        if ($request) {
+            $query = $request->input('query');
+
+            $leads = Leads::with('products', 'sales')
+                ->where('tanggal', 'LIKE', '%' . $query . '%')
+                ->orWhere('no_wa', 'LIKE', '%' . $query . '%')
+                ->orWhere('nama_lead', 'LIKE', '%' . $query . '%')
+                ->orWhere('kota', 'LIKE', '%' . $query . '%')
+                ->orWhereHas('sales', function($q) use ($query) {
+                    $q->where('nama_sale', 'LIKE', '%' . $query . '%');
+                })
+                ->orWhereHas('products', function($q) use ($query) {
+                    $q->where('nama_produk', 'LIKE', '%' . $query . '%');
+                })
+                ->get();
+
+            return view('leads.index', compact('leads'));
+        } else {
+            $leads = Leads::with('products', 'sales')
+                    ->orderBy('tanggal','desc')->get();
+            return view('leads.index', compact('leads'));
+        }
     }
 
     public function create() {
@@ -36,22 +55,7 @@ class LeadsController extends Controller
     }
 
     public function search(Request $request) {
-        $query = $request->input('query');
-
-        $leads = Leads::with('products', 'sales')
-            ->where('tanggal', 'LIKE', '%' . $query . '%')
-            ->orWhere('no_wa', 'LIKE', '%' . $query . '%')
-            ->orWhere('nama_lead', 'LIKE', '%' . $query . '%')
-            ->orWhere('kota', 'LIKE', '%' . $query . '%')
-            ->orWhereHas('sales', function($q) use ($query) {
-                $q->where('nama_sale', 'LIKE', '%' . $query . '%');
-            })
-            ->orWhereHas('products', function($q) use ($query) {
-                $q->where('nama_produk', 'LIKE', '%' . $query . '%');
-            })
-            ->get();
-
-        return view('leads.index', compact('leads'));
+        
     }
 
     public function edit($id) {
