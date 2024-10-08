@@ -54,10 +54,6 @@ class LeadsController extends Controller
         return redirect()->route('leads.index')->with('success','Leads added');
     }
 
-    public function search(Request $request) {
-        
-    }
-
     public function edit($id) {
         $lead = Leads::find($id);
         $products = Products::all();

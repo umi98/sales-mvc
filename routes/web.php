@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/sales', 'App\Http\Controllers\SalesController@index');
 
 Route::resource('leads', LeadsController::class);
-Route::get('/leads/search', [LeadsController::class, 'search'])->name('leads.search');
 Route::resource('products', ProductsController::class);
 Route::resource('sales', SalesController::class);
 
